@@ -26,7 +26,8 @@ void print_merge(int *array, int init, int end)
  * @iEnd: index end of array
  * Return: Without return
  */
-void top_down_merge(int *array, int *copyArray, int iInit, int iMiddle, int iEnd)
+void top_down_merge(int *array, int *copyArray,
+					int iInit, int iMiddle, int iEnd)
 {
 	int i = iInit, j = iMiddle, k = 0;
 
@@ -76,7 +77,7 @@ void top_down_split_merge(int *array, int *copyArray, int iInit, int iEnd)
 
 /**
  * merge_sort - Function init
- * @array; array with values
+ * @array: array with values
  * @size: size of array
  * Return: without return
  */
