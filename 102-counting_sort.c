@@ -12,6 +12,8 @@ void counting_sort(int *array, size_t size)
 	int maxValueArray = 0, i = 0, valueIndex = 0, valueIndexTwo = 0;
 	int *copyArray = NULL, *new = NULL;
 
+	if (array == NULL || size < 2)
+		return;
 	for (i = 0; i < (int)size; i++)
 		if (array[i] > maxValueArray)
 			maxValueArray = array[i];
@@ -37,8 +39,7 @@ void counting_sort(int *array, size_t size)
 		return;
 	for (i = 0; i < (int)size; i++)
 	{
-		valueIndex = array[i];
-		valueIndexTwo = new[valueIndex];
+		valueIndex = array[i], valueIndexTwo = new[valueIndex];
 		copyArray[valueIndexTwo - 1] = valueIndex;
 		new[valueIndex] = --valueIndexTwo;
 	}
