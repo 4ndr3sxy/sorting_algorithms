@@ -67,9 +67,9 @@ void top_down_split_merge(int *array, int *copyArray, int iInit, int iEnd)
 	top_down_split_merge(copyArray, array, iInit, iMiddle);
 	top_down_split_merge(copyArray, array, iMiddle, iEnd);
 	printf("Merging...\n[left]: ");
-	print_merge(array, iInit, iMiddle);
+	print_merge(copyArray, iInit, iMiddle);
 	printf("[right]: ");
-	print_merge(array, iMiddle, iEnd);
+	print_merge(copyArray, iMiddle, iEnd);
 	top_down_merge(copyArray, array, iInit, iMiddle, iEnd);
 	printf("[Done]: ");
 	print_merge(array, iInit, iEnd);
