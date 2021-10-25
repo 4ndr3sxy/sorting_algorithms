@@ -2,20 +2,6 @@
 #include <unistd.h>
 
 /**
- * create_malloc - function to create mallocs
- * @size: size to malloc
- * Return: pointer to malloc
- */
-int *create_malloc(int size)
-{
-	int *newMalloc = malloc(sizeof(int) * size);
-
-	if (!newMalloc)
-		return (NULL);
-	return (newMalloc);
-}
-
-/**
  * counting_sort - Algorithm sort
  * @array: array with values
  * @size: size of array
@@ -30,7 +16,9 @@ void counting_sort(int *array, size_t size)
 		if (array[i] > maxValueArray)
 			maxValueArray = array[i];
 	maxValueArray++;
-	new = create_malloc(maxValueArray);
+	new = malloc(sizeof(int) * maxValueArray);
+	if (!new)
+		return;
 
 	for (i = 0; i < maxValueArray; i++)
 		new[i] = 0;
@@ -44,7 +32,9 @@ void counting_sort(int *array, size_t size)
 		new[i + 1] = new[i + 1] + new[i];
 	for (i = 0; i < maxValueArray; i++)
 		printf("%d%s", new[i], (i + 1 == maxValueArray ? "\n" : ", "));
-	copyArray = create_malloc((int)size + 1);
+	copyArray = malloc(sizeof(int) * size + 1);
+	if (!copyArray)
+		return;
 	for (i = 0; i < (int)size; i++)
 	{
 		valueIndex = array[i];
