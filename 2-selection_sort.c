@@ -9,8 +9,8 @@
 void selection_sort(int *array, size_t size)
 {
 	size_t i = 0, j = 0;
-	int valueSelection = 0, temporalValue = 0;
-	int validateSwap = 0;
+	int indexValue = 0, valueSelection = 0, validateSwap = 0;
+	int temporalValue = 0;
 
 	for (; i < size; i++)
 	{
@@ -18,19 +18,20 @@ void selection_sort(int *array, size_t size)
 		valueSelection = array[i];
 		for (j = i; j < size; j++)
 		{
-			/*printf("%d > %d ", valueSelection, array[j]);*/
-			if (valueSelection > array[j])
+			if (array[j] < valueSelection)
 			{
-				/*printf("YES");*/
 				validateSwap = 1;
-				temporalValue = array[j];
-				array[j] = valueSelection;
-				valueSelection = temporalValue;
-				array[i] = valueSelection;
+				valueSelection = array[j];
+				indexValue = j;
 			}
 		}
 		if (validateSwap)
+		{
+			temporalValue = array[i];
+			array[i] = valueSelection;
+			array[indexValue] = temporalValue;
 			print_array(array, size);
+		}
 		else
 			break;
 	}
