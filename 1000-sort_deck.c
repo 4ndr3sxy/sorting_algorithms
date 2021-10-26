@@ -131,7 +131,7 @@ void sort_deck(deck_node_t **deck)
 
 	if (!deck || !*deck)
 		return;
-	for (x = 0; x < 100; x++, temporal = *deck, currentPosition = 0)
+	for (x = 0; x < 500; x++, temporal = *deck, currentPosition = 0)
 	{
 		while (temporal)
 		{
