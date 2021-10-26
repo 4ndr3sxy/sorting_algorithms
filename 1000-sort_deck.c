@@ -1,5 +1,4 @@
 #include "deck.h"
-#include <unistd.h>
 
 /**
  * sort_cards - sort card regardless the diference in index
@@ -47,7 +46,6 @@ void sort_cards(deck_node_t *pointersTrans[],
 void sort_cards_close(deck_node_t *crrntNP, deck_node_t **deck)
 {
 	deck_node_t *beforeN = NULL, *afterN = NULL;
-	int valuePrev = 0, value = 0;
 
 	beforeN = crrntNP->prev;
 	if (!beforeN)
