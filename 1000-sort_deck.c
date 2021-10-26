@@ -176,6 +176,7 @@ void sort_deck(deck_node_t **deck)
 					pointersTransmitter[1]->prev = pointersReceiver[0];
 					pointersReceiver[0]->next = pointersTransmitter[1];*/
 					/*break;*/
+                    
 					printf("before-Value-card=%s, before-kind-card=%d\n", temporalLogic->card->value, temporalLogic->card->kind);
 				}
 			}
