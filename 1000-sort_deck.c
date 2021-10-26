@@ -5,10 +5,12 @@
  * @pointersTrans: Pointers to address in the first node to replace
  * @pointersReceiver: Pointers to address in the second node to replace
  * @deck: head
+ * @negative: validator to the difference is negative or not
  * Return: without return
  */
 void sort_cards(deck_node_t *pointersTrans[],
-				deck_node_t *pointersReceiver[], deck_node_t **deck)
+				deck_node_t *pointersReceiver[], deck_node_t **deck,
+				int negative)
 {
 	pointersTrans[1]->next = pointersReceiver[2];
 	pointersTrans[1]->prev = pointersReceiver[0];
@@ -27,13 +29,26 @@ void sort_cards(deck_node_t *pointersTrans[],
 	{
 		pointersTrans[2]->prev = pointersReceiver[1];
 	}
-	if (pointersTrans[0])
+	if (negative)
 	{
-		pointersTrans[0]->next = pointersReceiver[1];
+		if (pointersReceiver[0])
+		{
+			pointersReceiver[0]->next = pointersTrans[1];
+			pointersTrans[0]->next = pointersReceiver[1];
+		}
+		else
+		{
+			pointersReceiver[1]->prev->next = pointersReceiver[1];
+			pointersTrans[0]->next = pointersReceiver[1];
+			*deck = pointersTrans[1];
+		}
 	}
 	else
 	{
-		*deck = pointersReceiver[1];
+		if (pointersTrans[0])
+			pointersTrans[0]->next = pointersReceiver[1];
+		else
+			*deck = pointersReceiver[1];
 	}
 }
 
@@ -127,7 +142,7 @@ void sort_deck(deck_node_t **deck)
 	deck_node_t *temporal = NULL, *temporalLogic = NULL;
 	deck_node_t *pointersTrans[] = {NULL, NULL, NULL};
 	deck_node_t *pointersReceiver[] = {NULL, NULL, NULL};
-	int currentPosition = 0, validatePosition = 0, x = 0;
+	int currentPosition = 0, valP = 0, x = 0, negative = 0;
 
 	if (!deck || !*deck)
 		return;
@@ -135,29 +150,29 @@ void sort_deck(deck_node_t **deck)
 	{
 		while (temporal)
 		{
-			validatePosition = validate_node(temporal, currentPosition);
-			if (validatePosition != 0)
+			valP = validate_node(temporal, currentPosition);
+			if (valP != 0)
 			{
-				if (validatePosition == 1)
+				if (valP == 1 || valP == -1)
 				{
 					sort_cards_close(temporal, deck);
 					break;
 				}
 				else
 				{
-					temporalLogic = temporal;
-pointersTrans[0] = temporalLogic->prev, pointersTrans[1] = temporalLogic;
+					negative = 0, temporalLogic = temporal;
+					pointersTrans[0] = temporalLogic->prev, pointersTrans[1] = temporalLogic;
 					pointersTrans[2] = temporalLogic->next;
-					while (validatePosition != 0)
+					while (valP != 0)
 					{
-					if (validatePosition > 0)
-					temporalLogic = temporalLogic->next, validatePosition--;
+					if (valP > 0)
+						temporalLogic = temporalLogic->next, valP--;
 					else
-					temporalLogic = temporalLogic->prev, validatePosition++;
+						temporalLogic = temporalLogic->prev, valP++, negative = 1;
 					}
 pointersReceiver[0] = temporalLogic->prev, pointersReceiver[1] = temporalLogic;
 					pointersReceiver[2] = temporalLogic->next;
-					sort_cards(pointersTrans, pointersReceiver, deck);
+					sort_cards(pointersTrans, pointersReceiver, deck, negative);
 					temporal = pointersReceiver[1];
 				}
 			}
