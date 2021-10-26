@@ -4,12 +4,20 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/**
+ * enum kind_e - kind of card
+ *
+ * @SPADE: Value of the kind 0
+ * @HEART: Value of the kind 1
+ * @CLUB: Value of the kind 2
+ * @DIAMOND: Value of the kind 3
+ */
 typedef enum kind_e
 {
-    SPADE = 0,
-    HEART,
-    CLUB,
-    DIAMOND
+	SPADE = 0,
+	HEART,
+	CLUB,
+	DIAMOND
 } kind_t;
 
 /**
@@ -21,8 +29,8 @@ typedef enum kind_e
  */
 typedef struct card_s
 {
-    const char *value;
-    const kind_t kind;
+	const char *value;
+	const kind_t kind;
 } card_t;
 
 /**
@@ -34,9 +42,9 @@ typedef struct card_s
  */
 typedef struct deck_node_s
 {
-    const card_t *card;
-    struct deck_node_s *prev;
-    struct deck_node_s *next;
+	const card_t *card;
+	struct deck_node_s *prev;
+	struct deck_node_s *next;
 } deck_node_t;
 
 void sort_deck(deck_node_t **deck);

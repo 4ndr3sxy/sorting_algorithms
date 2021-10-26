@@ -1,8 +1,50 @@
 #include "deck.h"
 #include <unistd.h>
 
+/**
+ * sort_cards - sort card regardless the diference in index
+ * @pointersTrans: Pointers to address in the first node to replace
+ * @pointersReceiver: Pointers to address in the second node to replace
+ * @deck: head
+ * Return: without return
+ */
+void sort_cards(deck_node_t *pointersTrans[],
+				deck_node_t *pointersReceiver[], deck_node_t **deck)
+{
+	pointersTrans[1]->next = pointersReceiver[2];
+	pointersTrans[1]->prev = pointersReceiver[0];
+	if (pointersReceiver[0])
+	{
+		pointersReceiver[0]->next = pointersTrans[1];
+	}
+	if (pointersReceiver[2])
+	{
+		pointersReceiver[2]->prev = pointersTrans[1];
+	}
 
-void sort_node(deck_node_t *crrntNP, deck_node_t **deck)
+	pointersReceiver[1]->next = pointersTrans[2];
+	pointersReceiver[1]->prev = pointersTrans[0];
+	if (pointersTrans[2])
+	{
+		pointersTrans[2]->prev = pointersReceiver[1];
+	}
+	if (pointersTrans[0])
+	{
+		pointersTrans[0]->next = pointersReceiver[1];
+	}
+	else
+	{
+		*deck = pointersReceiver[1];
+	}
+}
+
+/**
+ * sort_cards_close - Function to sort card with 1 index of diference
+ * @crrntNP: Node currently
+ * @deck: head
+ * Return: without return
+ */
+void sort_cards_close(deck_node_t *crrntNP, deck_node_t **deck)
 {
 	deck_node_t *beforeN = NULL, *afterN = NULL;
 	int valuePrev = 0, value = 0;
@@ -40,10 +82,15 @@ void sort_node(deck_node_t *crrntNP, deck_node_t **deck)
 	}
 }
 
+/**
+ * validate_node - validate if it is in the correct position
+ * @currentNode: Node currently
+ * @position: as an index
+ * Return: int with the number in the correct position
+ */
 int validate_node(deck_node_t *currentNode, int position)
 {
 	int valueCard = 0, valueType = 0, countTotal = 0;
-	printf("POSITION=%d\n", position);
 
 	valueCard = atoi(currentNode->card->value);
 	if (!valueCard)
@@ -66,30 +113,26 @@ int validate_node(deck_node_t *currentNode, int position)
 			valueCard = 0;
 			break;
 		}
-		printf("valueCard=%d", valueCard);
 	}
-	else
-	{
-		printf("valueCard=%d", valueCard);
-	}
-
 	valueType = currentNode->card->kind * 13;
 	countTotal = valueCard + valueType - position - 1;
-	printf(" and valueType=%d and countTotal=%d\n", valueType, countTotal);
 	return (countTotal);
 }
 
+/**
+ * sort_deck - sort a deck of cards (A-K, S,H,C,D)
+ * @deck: double pointer of the head of linked list
+ * Return: without return
+ */
 void sort_deck(deck_node_t **deck)
 {
 	deck_node_t *temporal = NULL, *temporalLogic = NULL;
-	deck_node_t *pointersTransmitter[] = {NULL, NULL, NULL};
+	deck_node_t *pointersTrans[] = {NULL, NULL, NULL};
 	deck_node_t *pointersReceiver[] = {NULL, NULL, NULL};
 	int currentPosition = 0, validatePosition = 0, x = 0;
-	;
 
-	do
+	for (x = 0; x < 10; x++, temporal = *deck, currentPosition = 0)
 	{
-		write(2, "hola\n", 5);
 		temporal = *deck;
 		while (temporal)
 		{
@@ -98,98 +141,29 @@ void sort_deck(deck_node_t **deck)
 			{
 				if (validatePosition == 1)
 				{
-					sort_node(temporal, deck);
+					sort_cards_close(temporal, deck);
 					break;
 				}
 				else
 				{
 
 					temporalLogic = temporal;
-					pointersTransmitter[0] = temporalLogic->prev;
-					pointersTransmitter[1] = temporalLogic;
-					pointersTransmitter[2] = temporalLogic->next;
-					/*printf("%p - %p - %p\n", temporalLogic->prev, temporalLogic, temporalLogic->next);*/
-					/*printf("(%s/%d) - (%s/%d)\n", temporalLogic->card->value, temporalLogic->card->kind, temporalLogic->next->card->value, temporalLogic->next->card->kind);*/
-					/*printf("%p - %p - %p\n", pointersTransmitter[0], pointersTransmitter[1], pointersTransmitter[2]);
-					printf("Current-Value-card=%s, current-kind-card=%d\n", temporalLogic->card->value, temporalLogic->card->kind);
-					printf("Address=%p,\n", pointersTransmitter[1]->next);*/
-					/*pointersTransmitter[1]->next = pointersTransmitter[0];
-					printf("Address=%p,\n", pointersTransmitter[1]->next);*/
+pointersTrans[0] = temporalLogic->prev, pointersTrans[1] = temporalLogic;
+					pointersTrans[2] = temporalLogic->next;
 					while (validatePosition != 0)
 					{
-						if (validatePosition > 0)
-						{
-
-							temporalLogic = temporalLogic->next, validatePosition--;
-						}
-						else
-						{
-
-							temporalLogic = temporalLogic->prev, validatePosition++;
-						}
-					}
-					pointersReceiver[0] = temporalLogic->prev;
-					pointersReceiver[1] = temporalLogic;
-					pointersReceiver[2] = temporalLogic->next;
-					/*printf("----\n");
-					printf("%p - %p - %p\n", pointersTransmitter[0], pointersTransmitter[1], pointersTransmitter[2]);
-					printf("%p - %p - %p\n", pointersReceiver[0], pointersReceiver[1], pointersReceiver[2]);
-					printf("%p - %p - %p\n", pointersReceiver[1]->prev, pointersReceiver[1], pointersReceiver[2]->next);
-					printf("----\n");*/
-					pointersTransmitter[1]->next = pointersReceiver[2];
-					pointersTransmitter[1]->prev = pointersReceiver[0];
-					if (pointersReceiver[0])
-					{
-						pointersReceiver[0]->next = pointersTransmitter[1];
-					}
-					if (pointersReceiver[2])
-					{
-						pointersReceiver[2]->prev = pointersTransmitter[1];
-					}
-
-					pointersReceiver[1]->next = pointersTransmitter[2];
-					pointersReceiver[1]->prev = pointersTransmitter[0];
-					if (pointersTransmitter[2])
-					{
-						pointersTransmitter[2]->prev = pointersReceiver[1];
-					}
-					if (pointersTransmitter[0])
-					{
-						pointersTransmitter[0]->next = pointersReceiver[1];
-					}
+					if (validatePosition > 0)
+					temporalLogic = temporalLogic->next, validatePosition--;
 					else
-					{
-						*deck = pointersReceiver[1];
+					temporalLogic = temporalLogic->prev, validatePosition++;
 					}
+pointersReceiver[0] = temporalLogic->prev, pointersReceiver[1] = temporalLogic;
+					pointersReceiver[2] = temporalLogic->next;
+					sort_cards(pointersTrans, pointersReceiver, deck);
 					temporal = pointersReceiver[1];
-					/*
-					if (pointersTransmitter[0])
-						pointersTransmitter[0]->next = pointersReceiver[1];
-					/*printf("----\n");
-					printf("%p - %p - %p\n", pointersTransmitter[0], pointersTransmitter[1], pointersTransmitter[2]);
-					printf("%p - %p - %p\n", pointersReceiver[0], pointersReceiver[1], pointersReceiver[2]);
-					printf("%p - %p - %p\n", pointersReceiver[1]->prev, pointersReceiver[1], pointersReceiver[2]->next);
-					printf("----\n");*/
-
-					/*pointersTransmitter[1]->next = pointersReceiver[2];
-					pointersReceiver[2]->prev = pointersTransmitter[1];
-					pointersTransmitter[1]->prev = pointersReceiver[0];
-					pointersReceiver[0]->next = pointersTransmitter[1];*/
-					/*break;*/
-                    
-					printf("before-Value-card=%s, before-kind-card=%d\n", temporalLogic->card->value, temporalLogic->card->kind);
 				}
 			}
-			temporal = temporal->next;
-			currentPosition++;
+			temporal = temporal->next, currentPosition++;
 		}
-		x++;
-		currentPosition = 0;
-		printf("---------\n");
-		printf("---------\n");
-		printf("%s - %d", (*deck)->card->value, (*deck)->card->kind);
-		printf("---------\n");
-		printf("---------\n");
-	} while (x < 5);
-	printf("((%d))",x);
+	}
 }
