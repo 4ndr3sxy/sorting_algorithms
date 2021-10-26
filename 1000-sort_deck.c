@@ -129,9 +129,10 @@ void sort_deck(deck_node_t **deck)
 	deck_node_t *pointersReceiver[] = {NULL, NULL, NULL};
 	int currentPosition = 0, validatePosition = 0, x = 0;
 
-	for (x = 0; x < 10; x++, temporal = *deck, currentPosition = 0)
+	if (!deck || !*deck)
+		return;
+	for (x = 0; x < 100; x++, temporal = *deck, currentPosition = 0)
 	{
-		temporal = *deck;
 		while (temporal)
 		{
 			validatePosition = validate_node(temporal, currentPosition);
@@ -144,7 +145,6 @@ void sort_deck(deck_node_t **deck)
 				}
 				else
 				{
-
 					temporalLogic = temporal;
 pointersTrans[0] = temporalLogic->prev, pointersTrans[1] = temporalLogic;
 					pointersTrans[2] = temporalLogic->next;
